@@ -7,8 +7,7 @@ app.use(express.json());
 
 //routes
 
-app.get("/", (req: Request, resp: Response) => {
-    
+app.get("/", (_req: Request, resp: Response) => {
     resp.send("Hello World");
 })
 
