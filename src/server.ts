@@ -1,4 +1,4 @@
-import express, { Response } from "express";
+import express, { Request, Response } from "express";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -7,9 +7,8 @@ app.use(express.json());
 
 //routes
 
-app.get("/", (resp: Response) => {
+app.get("/", (req: Request, resp: Response) => {
     
-    console.log(typeof resp);
     resp.send("Hello World");
 })
 
