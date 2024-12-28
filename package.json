@@ -1,0 +1,20 @@
+{
+  "name": "weather-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jacques",
+  "license": "MIT",
+  "description": "HTTP server using Node.js or TypeScript with Express that integrates with the OpenWeather API to provide an endpoint for querying current weather conditions, temperature categorization (hot, cold, or moderate), and active weather alerts based on latitude and longitude inputs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jacques717/weather-service.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jacques717/weather-service/issues"
+  },
+  "homepage": "https://github.com/Jacques717/weather-service#readme"
+}
