@@ -14,10 +14,13 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Hello World');
 });
 
-// Define the interface for the OpenWeather API response
+// Define the interface for the OpenWeather One Call API response
 interface WeatherData {
-  weather: { description: string }[];
-  main: { temp: number };
+  current: {
+    weather: { description: string }[];
+    temp: number;
+  };
+  alerts?: { event: string; description: string }[];
 }
 
 // Endpoint to get weather data by latitude and longitude
@@ -31,20 +34,21 @@ app.get('/weather', async (req: Request, res: Response) => {
 
   try {
     const response = await axios.get<WeatherData>(
-      `https://api.openweathermap.org/data/2.5/weather`,
+      `https://api.openweathermap.org/data/2.5/onecall`,
       {
         params: {
           lat,
           lon,
           appid: OPENWEATHER_API_KEY,
           units: 'metric', // Use metric units for temperature
+          exclude: 'minutely,hourly,daily', // Exclude unnecessary data
         },
       }
     );
 
     const weatherData = response.data;
-    const weatherCondition = weatherData.weather[0].description;
-    const temperature = weatherData.main.temp;
+    const weatherCondition = weatherData.current.weather[0].description;
+    const temperature = weatherData.current.temp;
 
     let temperatureCategory: string;
     if (temperature < 10) {
@@ -55,10 +59,17 @@ app.get('/weather', async (req: Request, res: Response) => {
       temperatureCategory = 'hot';
     }
 
+    const alerts =
+      weatherData.alerts?.map((alert) => ({
+        event: alert.event,
+        description: alert.description,
+      })) || [];
+
     res.json({
       condition: weatherCondition,
       temperature: `${temperature}°C`,
       category: temperatureCategory,
+      alerts,
     });
   } catch (error) {
     res.status(500).send('Error fetching weather data.');
