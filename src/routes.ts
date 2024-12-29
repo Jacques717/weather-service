@@ -1,15 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { OpenWeatherService } from './openWeatherService';
+//import { NewWeatherService } from './newWeatherService';
 import { validateLatLon } from './validators/locationValidator';
 
 const router = Router();
 
 // Use dependency injection to decide which weather service implementation to use
 const weatherService = new OpenWeatherService();
-
-router.get('/', (_req: Request, res: Response) => {
-  res.send('Hello World');
-});
+//const weatherService = new NewWeatherService();
 
 /**
  * Fetches weather data for a given latitude and longitude.
