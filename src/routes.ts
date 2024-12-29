@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { getWeatherData } from './weatherService';
-import { categorizeTemperature } from './utils';
+import { OpenWeatherService } from './openWeatherService';
 import { validateLatLon } from './validators/locationValidator';
 
 const router = Router();
+
+// Use dependency injection to decide which weather service implementation to use
+const weatherService = new OpenWeatherService();
 
 router.get('/', (_req: Request, res: Response) => {
   res.send('Hello World');
@@ -27,23 +29,8 @@ router.get('/weather', async (req: Request, res: Response) => {
   }
 
   try {
-    // Fetch weather data
-    const weatherData = await getWeatherData(lat, lon);
-    const weatherCondition = weatherData.current.weather[0].description;
-    const temperature = weatherData.current.temp;
-    // Categorize temperature
-    const temperatureCategory = categorizeTemperature(temperature);
-
-    res.json({
-      condition: weatherCondition,
-      temperature: `${temperature}°C`,
-      category: temperatureCategory,
-      alerts:
-        weatherData.alerts?.map((alert) => ({
-          event: alert.event,
-          description: alert.description,
-        })) || [],
-    });
+    const weatherData = await weatherService.getWeatherData(lat, lon);
+    res.json(weatherData);
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unknown error occurred';
