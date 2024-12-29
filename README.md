@@ -85,26 +85,28 @@ npm test
 
 ## Project Structure
 
+```
 /weather-service
 ├── /validators
-│ ├── locationValidator.ts // Location validation logic
+│   ├── locationValidator.ts    // Location validation logic
 ├── /src
-│ ├── server.ts // Main server logic
-│ ├── routes.ts // Routes for handling API requests
-│ ├── weatherService.ts // Weather service logic
-│ ├── openWeatherService.ts // OpenWeather service logic
-│ ├── newWeatherService.ts // NewWeather service logic
-│ └── utils.ts // Helper functions (e.g., temp classification)
-├── .env // For storing API keys securely
+│   ├── server.ts               // Main server logic
+│   ├── routes.ts               // Routes for handling API requests
+│   ├── weatherService.ts       // Weather service logic
+│   ├── openWeatherService.ts   // OpenWeather service logic
+│   ├── newWeatherService.ts    // NewWeather service logic
+│   └── utils.ts                // Helper functions (e.g., temp classification)
+├── .env                        // For storing API keys securely
 ├── package.json
 ├── README.md
-├── Dockerfile // Docker configuration for containerization
-├── tsconfig.json // TypeScript configuration
-├── .gitignore // Files to ignore in git
+├── Dockerfile                  // Docker configuration for containerization
+├── tsconfig.json               // TypeScript configuration
+├── .gitignore                  // Files to ignore in git
 └── /tests
-├── locationValidator.test.ts
-├── routes.test.ts
-├── server.test.ts
+    ├── locationValidator.test.ts
+    ├── routes.test.ts
+    ├── server.test.ts
+```
 
 ## Contributing
 
