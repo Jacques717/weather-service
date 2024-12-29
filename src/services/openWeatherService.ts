@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { WeatherService, WeatherData } from './weatherService';
-import { categorizeTemperature } from './utils';
+import { categorizeTemperature } from '../utils';
 
 dotenv.config();
 
