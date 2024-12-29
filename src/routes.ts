@@ -7,6 +7,10 @@ const router = Router();
 // Use dependency injection to decide which weather service implementation to use
 const weatherService = new OpenWeatherService();
 
+router.get('/', (_req: Request, res: Response) => {
+  res.send('Welcome to the Weather Service API!');
+});
+
 /**
  * Fetches weather data for a given latitude and longitude.
  * @param req - The request object.
