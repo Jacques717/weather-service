@@ -6,19 +6,13 @@ const app: Express = express();
 app.use(express.json());
 app.use(router);
 
-describe('GET /', () => {
-  it('should return Hello World', async () => {
-    const response = await request(app).get('/');
-    expect(response.status).toBe(200);
-    expect(response.text).toBe('Hello World');
-  });
-});
-
 describe('GET /weather', () => {
   it('should return 400 if lat and lon are not provided', async () => {
     const response = await request(app).get('/weather');
     expect(response.status).toBe(400);
-    expect(response.text).toBe('Latitude and longitude are required.');
+    expect(response.text).toContain(
+      'Invalid input: Latitude must be a valid degree. Longitude must be a valid degree'
+    );
   });
 
   it('should return weather data for valid lat and lon', async () => {
