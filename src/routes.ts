@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { getWeatherData } from './weatherService';
 import { categorizeTemperature } from './utils';
+import { validateLatLon } from './validators/locationValidator';
 
 const router = Router();
 
@@ -8,12 +9,20 @@ router.get('/', (_req: Request, res: Response) => {
   res.send('Hello World');
 });
 
+/**
+ * Fetches weather data for a given latitude and longitude.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 router.get('/weather', async (req: Request, res: Response) => {
   const lat = req.query.lat as string;
   const lon = req.query.lon as string;
 
-  if (!lat || !lon) {
-    res.status(400).send('Latitude and longitude are required.');
+  const errors = validateLatLon(lat, lon);
+
+  if (errors.length > 0) {
+    res.status(400).send(`Invalid input: ${errors.join(' ')}`);
+    return;
   }
 
   try {
@@ -22,21 +31,20 @@ router.get('/weather', async (req: Request, res: Response) => {
     const temperature = weatherData.current.temp;
     const temperatureCategory = categorizeTemperature(temperature);
 
-    const alerts =
-      weatherData.alerts?.map((alert) => ({
-        event: alert.event,
-        description: alert.description,
-      })) || [];
-
     res.json({
       condition: weatherCondition,
       temperature: `${temperature}°C`,
       category: temperatureCategory,
-      alerts,
+      alerts:
+        weatherData.alerts?.map((alert) => ({
+          event: alert.event,
+          description: alert.description,
+        })) || [],
     });
   } catch (error) {
-    //res.status(500).send('Error fetching weather data.');
-    res.status(500).send(error);
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(500).send(errorMessage);
   }
 });
 

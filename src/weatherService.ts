@@ -29,5 +29,21 @@ export const getWeatherData = async (
       },
     }
   );
-  return response.data;
+
+  const weatherData = response.data;
+
+  // Validate the response data
+  if (
+    !weatherData.current ||
+    !weatherData.current.weather ||
+    weatherData.current.weather.length === 0
+  ) {
+    throw new Error('Weather data is not available');
+  }
+
+  if (weatherData.current.temp === undefined) {
+    throw new Error('Temperature data is not available');
+  }
+
+  return weatherData;
 };
