@@ -18,6 +18,7 @@ router.get('/weather', async (req: Request, res: Response) => {
   const lat = req.query.lat as string;
   const lon = req.query.lon as string;
 
+  // Validate latitude and longitude
   const errors = validateLatLon(lat, lon);
 
   if (errors.length > 0) {
@@ -26,9 +27,11 @@ router.get('/weather', async (req: Request, res: Response) => {
   }
 
   try {
+    // Fetch weather data
     const weatherData = await getWeatherData(lat, lon);
     const weatherCondition = weatherData.current.weather[0].description;
     const temperature = weatherData.current.temp;
+    // Categorize temperature
     const temperatureCategory = categorizeTemperature(temperature);
 
     res.json({

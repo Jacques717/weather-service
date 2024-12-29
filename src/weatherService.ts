@@ -5,6 +5,7 @@ dotenv.config();
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 
+// Define the structure of the weather data
 interface WeatherData {
   current: {
     weather: { description: string }[];
@@ -13,6 +14,13 @@ interface WeatherData {
   alerts?: { event: string; description: string }[];
 }
 
+/**
+ * Fetches weather data for a given latitude and longitude.
+ * @param lat - The latitude value as a string.
+ * @param lon - The longitude value as a string.
+ * @returns The weather data.
+ * @throws An error if the weather data is not available or if the temperature data is not available.
+ */
 export const getWeatherData = async (
   lat: string,
   lon: string
