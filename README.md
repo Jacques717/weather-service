@@ -130,14 +130,15 @@ npm test
 
 ```
 /weather-service
+├── /services
+│   ├── weatherService.ts       // Weather service logic
+│   ├── openWeatherService.ts   // OpenWeather service logic
+│   ├── newWeatherService.ts    // NewWeather service logic
 ├── /validators
 │   ├── locationValidator.ts    // Location validation logic
 ├── /src
 │   ├── server.ts               // Main server logic
 │   ├── routes.ts               // Routes for handling API requests
-│   ├── weatherService.ts       // Weather service logic
-│   ├── openWeatherService.ts   // OpenWeather service logic
-│   ├── newWeatherService.ts    // NewWeather service logic
 │   └── utils.ts                // Helper functions (e.g., temp classification)
 ├── .env                        // For storing API keys securely
 ├── package.json
