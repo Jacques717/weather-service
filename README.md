@@ -1,12 +1,14 @@
 # Weather Service
 
-This project is a weather service API built with Node.js, Express, and TypeScript. It fetches weather data from the OpenWeather API and provides endpoints to retrieve weather information based on latitude and longitude.
+This project is a weather service API built with Node.js, Express, and TypeScript. It fetches weather data from weather service providers and provides endpoints to retrieve weather information based on latitude and longitude coordinates.
 
 ## Features
 
-- Fetch current weather conditions, temperature, and alerts for a given location.
-- Validate latitude and longitude inputs.
-- Modular architecture with support for multiple weather service providers.
+- Fetch current weather conditions, temperature, and alerts for a given location
+- Generic validation system for input parameters
+- Modular architecture supporting multiple weather service providers
+- Abstract base service class with generic type support
+- Comprehensive error handling with custom error types
 
 ## Prerequisites
 
@@ -30,15 +32,14 @@ This project is a weather service API built with Node.js, Express, and TypeScrip
 
 3. **Set up environment variables:**
 
-   Create a `.env` file in the root directory and add your OpenWeather API key:
+   Create a `.env` file in the root directory and add your API keys:
 
    ```plaintext
    OPENWEATHER_API_KEY=your_openweather_api_key
+   NEWWEATHER_API_KEY=your_newweather_api_key
    ```
 
 4. **Build the project:**
-
-   Compile the TypeScript code to JavaScript:
 
    ```bash
    npm run build
@@ -56,117 +57,109 @@ This project is a weather service API built with Node.js, Express, and TypeScrip
 
 ### Endpoints
 
-- **GET /**
+#### GET /
 
-  Returns a simple "Hello World" message.
+Returns a welcome message to the Weather Service API.
 
-- **GET /weather**
+#### GET /weather
 
-  Fetches weather data for a given latitude and longitude.
+Fetches weather data for a given latitude and longitude.
 
-  **Query Parameters:**
+**Query Parameters:**
 
-  - `lat` (required): Latitude of the location.
-  - `lon` (required): Longitude of the location.
+- `lat` (required): Latitude (-90 to 90)
+- `lon` (required): Longitude (-180 to 180)
 
-  **Example:**
-
-  ```bash
-  curl -G "http://localhost:3000/weather" --data-urlencode "lat=60" --data-urlencode "lon=60"
-  ```
-
-  **Response:**
-
-  - **Success (200):**
-
-    ```json
-    {
-      "location": {
-        "lat": 60,
-        "lon": 60
-      },
-      "temperature": {
-        "current": 15,
-        "min": 10,
-        "max": 20
-      },
-      "conditions": "Clear",
-      "alerts": []
-    }
-    ```
-
-  - **Error (400):**
-
-    ```json
-    {
-      "error": "Invalid latitude or longitude."
-    }
-    ```
-
-  - **Error (500):**
-    ```json
-    {
-      "error": "Internal server error."
-    }
-    ```
-
-### Error Handling
-
-The API returns standard HTTP status codes to indicate the success or failure of a request. Common status codes include:
-
-- **200 OK**: The request was successful.
-- **400 Bad Request**: The request was invalid (e.g., missing parameters).
-- **500 Internal Server Error**: An error occurred on the server.
-
-## Testing
-
-The project uses Jest and Supertest for testing. To run the tests, use the following command:
+**Example Request:**
 
 ```bash
-npm test
+curl -G "http://localhost:3000/weather" \
+     --data-urlencode "lat=60" \
+     --data-urlencode "lon=60"
+```
+
+**Success Response (200):**
+
+```json
+{
+  "condition": "clear sky",
+  "temperature": 20,
+  "category": "moderate",
+  "alerts": []
+}
+```
+
+**Error Response (400):**
+
+```json
+{
+  "error": "Invalid input: Latitude must be between -90 and 90."
+}
 ```
 
 ## Project Structure
 
 ```
-/weather-service
+/src
 ├── /services
-│   ├── weatherService.ts       // Weather service logic
-│   ├── openWeatherService.ts   // OpenWeather service logic
-│   ├── newWeatherService.ts    // NewWeather service logic
+│   ├── baseWeatherService.ts    # Abstract base class for weather services
+│   ├── openWeatherService.ts    # OpenWeather implementation
+│   ├── newWeatherService.ts     # Alternative weather service implementation
+│   ├── weatherService.ts        # Weather service interface
+│   └── types.ts                 # Service-specific type definitions
+├── /utils
+│   ├── errorHandler.ts          # Generic error handling utilities
+│   └── temperature.ts           # Temperature categorization logic
 ├── /validators
-│   ├── locationValidator.ts    // Location validation logic
-├── /src
-│   ├── server.ts               // Main server logic
-│   ├── routes.ts               // Routes for handling API requests
-│   └── utils.ts                // Helper functions (e.g., temp classification)
-├── .env                        // For storing API keys securely
-├── package.json
-├── README.md
-├── Dockerfile                  // Docker configuration for containerization
-├── tsconfig.json               // TypeScript configuration
-├── .gitignore                  // Files to ignore in git
-└── /tests
-    ├── locationValidator.test.ts
-    ├── routes.test.ts
-    ├── server.test.ts
+│   └── validator.ts             # Generic validation system
+├── routes.ts                    # API route definitions
+└── server.ts                    # Express server setup
 ```
 
-## Installed Packages
+## Key Components
 
-This project uses several npm packages to facilitate its functionality. Below is a list of the key packages and their purposes:
+### Services
 
-- **express**: A web framework for Node.js that simplifies the process of building web applications and APIs.
-- **typescript**: A superset of JavaScript that adds static types, enabling better tooling and error checking.
-- **dotenv**: A module that loads environment variables from a `.env` file into `process.env`, allowing for secure configuration management.
-- **jest**: A testing framework for JavaScript that provides a simple way to write and run tests.
-- **supertest**: A library for testing HTTP servers in Node.js, often used in conjunction with Jest for API testing.
-- **@types/express**: Type definitions for Express, providing TypeScript support for the Express framework.
-- **@types/jest**: Type definitions for Jest, enabling TypeScript support for the Jest testing framework.
+- **BaseWeatherService**: Abstract generic base class for weather services
+- **OpenWeatherService**: Implementation for OpenWeather API
+- **NewWeatherService**: Template for additional weather service providers
+
+### Validation
+
+- Generic `Validator` class supporting custom validation rules
+- Separate validation rules for latitude and longitude
+- Extensible validation system for adding new rules
+
+### Error Handling
+
+- Generic `ApiError` class with type support
+- Centralized error handling utilities
+- Consistent error response format
+
+## Testing
+
+The project uses Jest and Supertest for testing. Run tests with:
+
+```bash
+npm test
+```
+
+Test files cover:
+
+- Input validation
+- API endpoints
+- Weather service implementations
+- Error handling
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to your branch
+5. Create a Pull Request
 
 ## License
 
