@@ -1,7 +1,7 @@
 import { WeatherData } from './weatherService';
 import { BaseWeatherService } from './baseWeatherService';
 import { ApiError } from '../utils/errorHandler';
-import { categorizeTemperature } from '../utils';
+import { categorizeTemperature } from '../utils/temperature';
 import { NewWeatherResponse } from './types';
 
 export class NewWeatherService extends BaseWeatherService<NewWeatherResponse> {
@@ -10,7 +10,7 @@ export class NewWeatherService extends BaseWeatherService<NewWeatherResponse> {
   }
 
   protected getApiUrl(): string {
-    return 'https://api.newweathermap.org/data/1/weather';
+    return 'https://api.openweathermap.org/data/2.5/weather';
   }
 
   protected getAdditionalParams(): object {

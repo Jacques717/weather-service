@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { categorizeTemperature } from '../utils';
+import { categorizeTemperature } from '../utils/temperature';
 import { BaseWeatherService } from './baseWeatherService';
 import { ApiError } from '../utils/errorHandler';
 import { WeatherData } from './weatherService';

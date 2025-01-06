@@ -1,13 +1,13 @@
 import { Router, Request, Response } from 'express';
-//import { OpenWeatherService } from './services/openWeatherService';
-import { NewWeatherService } from './services/newWeatherService';
+import { OpenWeatherService } from './services/openWeatherService';
+// import { NewWeatherService } from './services/newWeatherService';
 import { validateLatLon } from './validators/locationValidator';
 
 const router = Router();
 
 // Use dependency injection to decide which weather service implementation to use
-// const weatherService = new OpenWeatherService();
-const weatherService = new NewWeatherService();
+const weatherService = new OpenWeatherService();
+//const weatherService = new NewWeatherService();
 
 router.get('/', (_req: Request, res: Response) => {
   res.send('Welcome to the Weather Service API!');
