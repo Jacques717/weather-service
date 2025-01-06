@@ -1,11 +1,13 @@
 import { Router, Request, Response } from 'express';
-import { OpenWeatherService } from './services/openWeatherService';
+//import { OpenWeatherService } from './services/openWeatherService';
+import { NewWeatherService } from './services/newWeatherService';
 import { validateLatLon } from './validators/locationValidator';
 
 const router = Router();
 
 // Use dependency injection to decide which weather service implementation to use
-const weatherService = new OpenWeatherService();
+// const weatherService = new OpenWeatherService();
+const weatherService = new NewWeatherService();
 
 router.get('/', (_req: Request, res: Response) => {
   res.send('Welcome to the Weather Service API!');
@@ -20,7 +22,7 @@ router.get('/weather', async (req: Request, res: Response) => {
   const lat = req.query.lat as string;
   const lon = req.query.lon as string;
 
-  // Validate latitude and longitude
+  // Validate latitude and longitude before fetching weather data from Weather API
   const errors = validateLatLon(lat, lon);
 
   if (errors.length > 0) {
