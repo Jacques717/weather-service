@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { OpenWeatherService } from './services/openWeatherService';
 // import { NewWeatherService } from './services/newWeatherService';
-import { validateLatLon } from './validators/locationValidator';
+import { latitudeValidator, longitudeValidator } from './validators/validator';
 
 const router = Router();
 
@@ -22,8 +22,9 @@ router.get('/weather', async (req: Request, res: Response) => {
   const lat = req.query.lat as string;
   const lon = req.query.lon as string;
 
-  // Validate latitude and longitude before fetching weather data from Weather API
-  const errors = validateLatLon(lat, lon);
+  const latErrors = latitudeValidator.validate(lat);
+  const lonErrors = longitudeValidator.validate(lon);
+  const errors = [...latErrors, ...lonErrors];
 
   if (errors.length > 0) {
     res.status(400).send(`Invalid input: ${errors.join(' ')}`);

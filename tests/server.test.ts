@@ -11,7 +11,7 @@ describe('GET /weather', () => {
     const response = await request(app).get('/weather');
     expect(response.status).toBe(400);
     expect(response.text).toContain(
-      'Invalid input: Latitude must be a valid degree. Longitude must be a valid degree'
+      'Invalid input: Latitude must be a valid degree. Latitude must be between -90 and 90. Longitude must be a valid degree. Longitude must be between -180 and 180.'
     );
   });
 

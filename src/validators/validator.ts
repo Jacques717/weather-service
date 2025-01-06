@@ -13,7 +13,7 @@ export class Validator<T> {
   }
 }
 
-// Usage example for location validator:
+// Latitude validation rules
 const latitudeRules: ValidationRule<string>[] = [
   {
     validate: (lat) => /^-?\d+(\.\d+)?$/.test(lat),
@@ -22,10 +22,26 @@ const latitudeRules: ValidationRule<string>[] = [
   {
     validate: (lat) => {
       const num = parseFloat(lat);
-      return num >= -90 && num <= 90;
+      return !isNaN(num) && num >= -90 && num <= 90;
     },
     errorMessage: 'Latitude must be between -90 and 90.',
   },
 ];
 
-export const validateLatitude = new Validator(latitudeRules);
+// Longitude validation rules
+const longitudeRules: ValidationRule<string>[] = [
+  {
+    validate: (lon) => /^-?\d+(\.\d+)?$/.test(lon),
+    errorMessage: 'Longitude must be a valid degree.',
+  },
+  {
+    validate: (lon) => {
+      const num = parseFloat(lon);
+      return !isNaN(num) && num >= -180 && num <= 180;
+    },
+    errorMessage: 'Longitude must be between -180 and 180.',
+  },
+];
+
+export const latitudeValidator = new Validator(latitudeRules);
+export const longitudeValidator = new Validator(longitudeRules);
